@@ -1,4 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Competitive Exam Papers
+
+A web application for hosting and organizing competitive exam papers like IIT-JEE and NEET, sorted by exam type and year.
+
+## Features
+
+- Browse exam papers by exam type (IIT-JEE, NEET, etc.)
+- Filter papers by year
+- Download paper PDFs and solutions
+- Modern, responsive UI built with Next.js and Tailwind CSS
 
 ## Getting Started
 
@@ -8,10 +17,6 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
