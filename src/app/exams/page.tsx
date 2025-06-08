@@ -80,6 +80,38 @@ export default function ExamsPage() {
           </div>
         ))}
       </div>
+
+      {/* New 2023 Papers Section */}
+      <div className="mb-12 border-2 border-yellow-400 bg-yellow-50 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <span className="bg-yellow-400 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full mr-2">NEW</span>
+          <h2 className="text-2xl font-bold">Latest 2023 Papers Now Available!</h2>
+        </div>
+        <p className="text-gray-700 mb-4">
+          We've just added the latest 2023 question papers for IIT-JEE, NEET, and GATE exams. 
+          These papers include detailed solutions to help you in your preparation.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <Link href="/exams/iit/2023" className="flex items-center p-4 bg-white border rounded-lg hover:shadow-md transition">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+            </svg>
+            <span className="font-medium">IIT-JEE 2023 Papers</span>
+          </Link>
+          <Link href="/exams/neet/2023" className="flex items-center p-4 bg-white border rounded-lg hover:shadow-md transition">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+            </svg>
+            <span className="font-medium">NEET 2023 Papers</span>
+          </Link>
+          <Link href="/exams/gate/2023" className="flex items-center p-4 bg-white border rounded-lg hover:shadow-md transition">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+            </svg>
+            <span className="font-medium">GATE 2023 Papers</span>
+          </Link>
+        </div>
+      </div>
       
       {/* Tips Section */}
       <div className="bg-blue-50 border border-blue-100 rounded-lg p-6 mb-10">

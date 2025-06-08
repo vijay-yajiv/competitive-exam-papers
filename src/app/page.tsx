@@ -4,9 +4,28 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="flex flex-col items-center px-4 py-8">
+      {/* New Papers Alert */}
+      <div className="w-full max-w-6xl mx-auto">
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-yellow-700">
+                <span className="font-medium">New!</span> 2023 exam papers for IIT-JEE, NEET, and GATE are now available. 
+                <Link href="/exams" className="font-bold text-yellow-700 underline ml-1">Check them out</Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       {/* Hero Section */}
       <section className="w-full max-w-6xl text-center py-16 px-4">
-        <h1 className="text-5xl font-bold mb-6">Hello Vedha and Anshu</h1>
+        <h1 className="text-5xl font-bold mb-6">Competitive Exam Papers</h1>
         <h2 className="text-3xl font-semibold mb-6 text-gray-800">Ace Your Competitive Exams</h2>
         <p className="text-xl mb-10 text-gray-600 max-w-3xl mx-auto">
           Your one-stop destination for previous years' IIT, NEET, and other competitive exam papers sorted by exam type and year.

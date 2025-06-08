@@ -1,20 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
 import PaperCard from '@/components/PaperCard';
+import { examPapers } from '@/data/examPapers';
 
-export default function ExamYearPage({ params }: { params: { examType: string, year: string } }) {
-  const { examType, year } = params;
+export default async function ExamYearPage({ params }: { params: Promise<{ examType: string, year: string }> }) {
+  const { examType, year } = await params;
+  
+  // Get papers for this exam type and year
+  const papers = examPapers.filter(
+    paper => paper.examType === examType && paper.year === year
+  );
   
   // This would typically come from your database or API
   const examName = examType === 'iit' ? 'IIT-JEE' : 
                    examType === 'neet' ? 'NEET' : 
                    examType === 'gate' ? 'GATE' : examType.toUpperCase();
-  
-  const paperTypes = examType === 'iit' ? 
-    ['Paper 1 (Physics, Chemistry)', 'Paper 2 (Mathematics)'] :
-    examType === 'neet' ? 
-    ['Physics', 'Chemistry', 'Biology'] : 
-    ['Paper 1', 'Paper 2'];
   
   return (
     <div className="container mx-auto p-8">
@@ -50,14 +50,28 @@ export default function ExamYearPage({ params }: { params: { examType: string, y
       </div>
       
       <div className="grid md:grid-cols-2 gap-6 mb-8">
-        {paperTypes.map((paper, index) => (
-          <PaperCard 
-            key={index}
-            examType={examType}
-            year={year}
-            paperType={paper}
-          />
-        ))}
+        {papers.length > 0 ? (
+          papers.map((paper) => (
+            <PaperCard 
+              key={paper.id}
+              id={paper.id}
+              examType={paper.examType}
+              year={paper.year}
+              paperType={paper.paperType}
+              hasDownload={paper.hasDownload}
+              hasSolution={paper.hasSolution}
+              paperUrl={paper.paperUrl}
+              solutionUrl={paper.solutionUrl}
+              subjects={paper.subjects}
+              views={paper.views}
+            />
+          ))
+        ) : (
+          <div className="col-span-2 text-center p-8 border rounded-lg">
+            <h2 className="text-xl font-medium text-gray-500">No papers available for {examName} {year}</h2>
+            <p className="mt-2 text-gray-400">Please check back later or try another year</p>
+          </div>
+        )}
       </div>
       
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-12">
