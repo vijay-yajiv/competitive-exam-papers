@@ -92,6 +92,15 @@ export default function AdminUploadPage() {
       
       <h1 className="text-3xl font-bold mb-8">Upload Exam Paper</h1>
       
+      {/* Development Mode Notice */}
+      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
+        <h2 className="font-semibold text-blue-800 mb-2">🚀 Development Mode</h2>
+        <p className="text-blue-700 text-sm">
+          Azure services are not configured. Files will be stored locally for testing. 
+          To use Azure services, configure COSMOS_ENDPOINT, COSMOS_KEY, and AZURE_STORAGE_CONNECTION_STRING in your .env.local file.
+        </p>
+      </div>
+      
       {uploadResult && (
         <div className={`mb-6 p-4 rounded-md ${
           uploadResult.success 

@@ -9,14 +9,28 @@ export const cosmosConfig = {
   containerId: "Papers"
 };
 
+// Validate Azure Cosmos DB configuration
+const validateCosmosConfig = () => {
+  if (!cosmosConfig.endpoint) {
+    throw new Error("COSMOS_ENDPOINT is not configured in environment variables");
+  }
+  if (!cosmosConfig.key) {
+    throw new Error("COSMOS_KEY is not configured in environment variables");
+  }
+};
+
 // Initialize the Cosmos Client
-const client = new CosmosClient({
-  endpoint: cosmosConfig.endpoint,
-  key: cosmosConfig.key
-});
+const getCosmosClient = () => {
+  validateCosmosConfig();
+  return new CosmosClient({
+    endpoint: cosmosConfig.endpoint,
+    key: cosmosConfig.key
+  });
+};
 
 // Get database and container
 export async function getDatabase() {
+  const client = getCosmosClient();
   const { database } = await client.databases.createIfNotExists({ id: cosmosConfig.databaseId });
   return database;
 }

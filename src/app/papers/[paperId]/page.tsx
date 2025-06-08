@@ -186,7 +186,7 @@ export default function PaperDetailPage() {
           <div className="flex gap-3">
             {paper.hasDownload && (
               <a 
-                href={paper.paperUrl}
+                href={`/api/download/${paperId}?type=paper`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={trackDownload}
@@ -201,7 +201,7 @@ export default function PaperDetailPage() {
             
             {paper.hasSolution && (
               <a 
-                href={paper.solutionUrl}
+                href={`/api/download/${paperId}?type=solution`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-2.5 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition flex items-center"

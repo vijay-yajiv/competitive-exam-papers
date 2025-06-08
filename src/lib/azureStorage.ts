@@ -1,12 +1,20 @@
 // Azure Blob Storage Configuration
-import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
+import { BlobServiceClient, ContainerClient, BlobSASPermissions, generateBlobSASQueryParameters, StorageSharedKeyCredential } from "@azure/storage-blob";
 
 // Azure Blob Storage configuration
 const azureStorageConnectionString = process.env.AZURE_STORAGE_CONNECTION_STRING || "";
 const containerName = "exam-papers";
 
+// Validate Azure configuration
+const validateAzureConfig = () => {
+  if (!azureStorageConnectionString) {
+    throw new Error("AZURE_STORAGE_CONNECTION_STRING is not configured in environment variables");
+  }
+};
+
 // Get Azure Storage Blob service client
 const getBlobServiceClient = () => {
+  validateAzureConfig();
   return BlobServiceClient.fromConnectionString(azureStorageConnectionString);
 };
 
@@ -21,7 +29,7 @@ export const createContainerIfNotExists = async (): Promise<void> => {
   try {
     const containerClient = getContainerClient();
     await containerClient.createIfNotExists({
-      access: "blob" // This makes blobs public readable
+      // Remove access property to make it private by default
     });
     console.log(`Container '${containerName}' created or already exists`);
   } catch (error) {
@@ -111,6 +119,61 @@ export const listFiles = async (): Promise<string[]> => {
     return blobNames;
   } catch (error) {
     console.error("Error listing blobs:", error);
+    throw error;
+  }
+};
+
+// Generate a signed URL for secure access to private blobs
+export const generateSignedUrl = async (blobName: string, expiresInHours: number = 24): Promise<string> => {
+  try {
+    const containerClient = getContainerClient();
+    const blobClient = containerClient.getBlobClient(blobName);
+    
+    // Parse connection string to get account name and key
+    const connectionStringParts = azureStorageConnectionString.split(';');
+    const accountName = connectionStringParts.find(part => part.startsWith('AccountName='))?.split('=')[1];
+    const accountKey = connectionStringParts.find(part => part.startsWith('AccountKey='))?.split('=')[1];
+    
+    if (!accountName || !accountKey) {
+      throw new Error('Unable to parse account name or key from connection string');
+    }
+    
+    const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey);
+    
+    // Set permissions and expiry
+    const permissions = new BlobSASPermissions();
+    permissions.read = true;
+    
+    const expiryDate = new Date();
+    expiryDate.setTime(expiryDate.getTime() + (expiresInHours * 60 * 60 * 1000));
+    
+    // Generate SAS token
+    const sasToken = generateBlobSASQueryParameters({
+      containerName,
+      blobName,
+      permissions,
+      expiresOn: expiryDate
+    }, sharedKeyCredential);
+    
+    // Return URL with SAS token
+    return `${blobClient.url}?${sasToken}`;
+  } catch (error) {
+    console.error(`Error generating signed URL for blob '${blobName}':`, error);
+    throw error;
+  }
+};
+
+// Get a signed URL for a blob by extracting blob name from full URL
+export const getSignedUrlFromBlobUrl = async (blobUrl: string, expiresInHours: number = 24): Promise<string> => {
+  try {
+    // Extract blob name from URL
+    const url = new URL(blobUrl);
+    const pathParts = url.pathname.split('/');
+    const blobName = pathParts[pathParts.length - 1];
+    
+    return await generateSignedUrl(blobName, expiresInHours);
+  } catch (error) {
+    console.error(`Error getting signed URL from blob URL '${blobUrl}':`, error);
     throw error;
   }
 };

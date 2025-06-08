@@ -130,7 +130,7 @@ export default function PaperCard({
       <div className="flex flex-wrap gap-3 mt-6">
         {hasDownload && (
           <a 
-            href={paperUrl}
+            href={`/api/download/${id}?type=paper`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center text-sm"
@@ -148,7 +148,7 @@ export default function PaperCard({
         
         {hasSolution && (
           <a 
-            href={solutionUrl}
+            href={`/api/download/${id}?type=solution`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition flex items-center text-sm"
