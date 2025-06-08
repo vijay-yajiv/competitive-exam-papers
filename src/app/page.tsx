@@ -1,102 +1,153 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex flex-col items-center px-4 py-8">
+      {/* Hero Section */}
+      <section className="w-full max-w-6xl text-center py-16 px-4">
+        <h1 className="text-5xl font-bold mb-6">Hello Vedha and Anshu</h1>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-800">Ace Your Competitive Exams</h2>
+        <p className="text-xl mb-10 text-gray-600 max-w-3xl mx-auto">
+          Your one-stop destination for previous years' IIT, NEET, and other competitive exam papers sorted by exam type and year.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link 
+            href="/exams" 
+            className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-lg font-medium"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Browse All Papers
+          </Link>
+          <Link 
+            href="#featured-exams" 
+            className="px-8 py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition text-lg font-medium"
           >
-            Read our docs
-          </a>
+            Explore Features
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+      
+      {/* Featured Exams Section */}
+      <section id="featured-exams" className="w-full max-w-6xl py-16 px-4">
+        <h2 className="text-3xl font-bold mb-10 text-center">Featured Exam Papers</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition duration-300">
+            <div className="h-2 bg-blue-600"></div>
+            <div className="p-6">
+              <h3 className="text-xl font-bold mb-2">IIT-JEE Papers</h3>
+              <p className="text-gray-600 mb-6">Access comprehensive collections of previous years' IIT-JEE papers sorted by year.</p>
+              <Link 
+                href="/exams"
+                className="text-blue-600 font-medium hover:text-blue-800 flex items-center"
+              >
+                Browse Papers
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition duration-300">
+            <div className="h-2 bg-green-600"></div>
+            <div className="p-6">
+              <h3 className="text-xl font-bold mb-2">NEET Papers</h3>
+              <p className="text-gray-600 mb-6">Find comprehensive collections of previous years' NEET exam papers organized by year.</p>
+              <Link 
+                href="/exams"
+                className="text-green-600 font-medium hover:text-green-800 flex items-center"
+              >
+                Browse Papers
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition duration-300">
+            <div className="h-2 bg-purple-600"></div>
+            <div className="p-6">
+              <h3 className="text-xl font-bold mb-2">GATE Papers</h3>
+              <p className="text-gray-600 mb-6">Access previous years' GATE exam papers for various engineering disciplines.</p>
+              <Link 
+                href="/exams"
+                className="text-purple-600 font-medium hover:text-purple-800 flex items-center"
+              >
+                Browse Papers
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Features Section */}
+      <section className="w-full max-w-6xl py-16 px-4">
+        <h2 className="text-3xl font-bold mb-12 text-center">Why Use Our Platform?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="flex flex-col items-center text-center p-4">
+            <div className="bg-blue-100 p-3 rounded-full mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Organized Collection</h3>
+            <p className="text-gray-600">All exam papers are systematically organized by exam type and year for easy navigation.</p>
+          </div>
+          
+          <div className="flex flex-col items-center text-center p-4">
+            <div className="bg-green-100 p-3 rounded-full mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Easy Downloads</h3>
+            <p className="text-gray-600">Download papers and solutions with a single click in PDF format for offline study.</p>
+          </div>
+          
+          <div className="flex flex-col items-center text-center p-4">
+            <div className="bg-purple-100 p-3 rounded-full mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Complete Solutions</h3>
+            <p className="text-gray-600">Access detailed solutions with step-by-step explanations for better understanding.</p>
+          </div>
+        </div>
+      </section>
+      
+      {/* Footer */}
+      <footer className="w-full bg-gray-50 border-t border-gray-200 mt-16 py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2">
+              <h3 className="text-lg font-bold mb-4">Competitive Exam Papers</h3>
+              <p className="text-gray-600 mb-4">Your one-stop destination for previous years' competitive exam papers.</p>
+              <p className="text-gray-600">© {new Date().getFullYear()} Competitive Exam Papers. All rights reserved.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2">
+                <li><Link href="/" className="text-gray-600 hover:text-blue-600">Home</Link></li>
+                <li><Link href="/exams" className="text-gray-600 hover:text-blue-600">Browse Exams</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-blue-600">About Us</Link></li>
+                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Contact</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Exams</h4>
+              <ul className="space-y-2">
+                <li><Link href="/exams/iit/2023" className="text-gray-600 hover:text-blue-600">IIT-JEE</Link></li>
+                <li><Link href="/exams/neet/2023" className="text-gray-600 hover:text-blue-600">NEET</Link></li>
+                <li><Link href="/exams/gate/2023" className="text-gray-600 hover:text-blue-600">GATE</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );
