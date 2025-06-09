@@ -15,18 +15,28 @@ process.env.AZURE_STORAGE_CONTAINER_NAME = 'test-container';
 // Mock global.fetch
 global.fetch = jest.fn();
 
-// Mock Next.js Response and Request
+// Mock Next.js Response and Request  
+// Note: This is a simplified mock that may not work perfectly for all cases
+// The key is that NextResponse.json returns a Response-like object
 jest.mock('next/server', () => {
   const originalModule = jest.requireActual('next/server');
   return {
     __esModule: true,
     ...originalModule,
     NextResponse: {
-      json: jest.fn((body, init) => ({ 
-        body, 
-        init,
-        headers: new Map()
-      }))
+      ...originalModule.NextResponse,
+      json: jest.fn((body, init) => {
+        // Return a Promise that resolves to a Response-like object
+        return Promise.resolve({
+          status: init?.status || 200,
+          statusText: init?.statusText || 'OK',
+          headers: new Map(Object.entries(init?.headers || {})),
+          body,
+          json: jest.fn().mockResolvedValue(body),
+          text: jest.fn().mockResolvedValue(JSON.stringify(body)),
+          ok: (init?.status || 200) >= 200 && (init?.status || 200) < 300,
+        });
+      })
     }
   };
 });
@@ -36,8 +46,11 @@ const originalLog = console.log;
 const originalError = console.error;
 
 beforeAll(() => {
-  console.log = jest.fn();
-  console.error = jest.fn();
+  // Don't suppress console logs during debug tests
+  if (!process.env.JEST_DEBUG) {
+    console.log = jest.fn();
+    console.error = jest.fn();
+  }
 });
 
 afterAll(() => {

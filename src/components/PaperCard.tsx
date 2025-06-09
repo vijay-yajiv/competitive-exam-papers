@@ -10,6 +10,7 @@ interface PaperCardProps {
   examType: string;
   year: string;
   paperType: string;
+  hasView?: boolean;
   hasDownload?: boolean;
   hasSolution?: boolean;
   paperUrl?: string;
@@ -17,6 +18,8 @@ interface PaperCardProps {
   subjects?: string[];
   views?: number;
   isFavorited?: boolean;
+  onViewPaper?: (paperId: string, paperTitle: string) => void;
+  onPaperDetails?: (paperId: string) => void;
 }
 
 export default function PaperCard({ 
@@ -24,14 +27,20 @@ export default function PaperCard({
   examType, 
   year, 
   paperType, 
-  hasDownload = true, 
+  hasView = true, 
+  hasDownload = false,
   hasSolution = true,
   paperUrl = '#',
   solutionUrl = '#',
   subjects,
   views,
-  isFavorited = false
+  isFavorited = false,
+  onViewPaper,
+  onPaperDetails
 }: PaperCardProps) {
+  // Debug logging to track View Paper button visibility
+  console.log(`PaperCard ${id}: hasView=${hasView}, hasDownload=${hasDownload}, paperUrl=${paperUrl}, onViewPaper=${!!onViewPaper}, hasSolution=${hasSolution}`);
+  
   const [favorited, setFavorited] = useState(isFavorited);
   const [isLoading, setIsLoading] = useState(false);
   const { data: session, status } = useSession();
@@ -92,58 +101,76 @@ export default function PaperCard({
     
   return (
     <div className="border rounded-lg shadow-sm hover:shadow-md transition-shadow p-6">
-      <Link href={`/papers/${id}`} className="block cursor-pointer">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <h3 className="text-lg font-semibold text-blue-600 hover:text-blue-800">{examName} {year}</h3>
-            <p className="text-gray-500">{paperType}</p>
-          </div>
-          <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">PDF</span>
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="text-lg font-semibold text-blue-600">{examName} {year}</h3>
+          <p className="text-gray-500">{paperType}</p>
         </div>
-        
-        {subjects && subjects.length > 0 && (
-          <div className="mt-3 mb-4">
-            <div className="flex flex-wrap gap-1">
-              {subjects.map((subject, index) => (
-                <span 
-                  key={index}
-                  className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs"
-                >
-                  {subject}
-                </span>
-              ))}
-            </div>
+        <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">PDF</span>
+      </div>
+      
+      {subjects && subjects.length > 0 && (
+        <div className="mt-3 mb-4">
+          <div className="flex flex-wrap gap-1">
+            {subjects.map((subject, index) => (
+              <span 
+                key={index}
+                className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded text-xs"
+              >
+                {subject}
+              </span>
+            ))}
           </div>
-        )}
-        
-        {views !== undefined && (
-          <div className="mt-2 text-xs text-gray-500 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            {views} views
-          </div>
-        )}
-      </Link>
+        </div>
+      )}
+      
+      {views !== undefined && (
+        <div className="mt-2 text-xs text-gray-500 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          {views} views
+        </div>
+      )}
       
       <div className="flex flex-wrap gap-3 mt-6">
-        {hasDownload && (
-          <a 
-            href={`/api/download/${id}?type=paper`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center text-sm"
-            onClick={(e) => {
-              // In a real app, track download events
-              console.log(`Download event for paper ${id}`);
-            }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Download Paper
-          </a>
+        {(hasView || hasDownload || paperUrl) && (
+          onViewPaper ? (
+            <button 
+              onClick={() => {
+                const examName = examType === 'iit' ? 'IIT-JEE' : 
+                                 examType === 'neet' ? 'NEET' : 
+                                 examType === 'gate' ? 'GATE' : examType.toUpperCase();
+                onViewPaper(id, `${examName} ${year} - ${paperType}`);
+                console.log(`View event for paper ${id}`);
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center text-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Paper
+            </button>
+          ) : (
+            <a 
+              href={`/api/download/${id}?type=paper`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center text-sm"
+              onClick={(e) => {
+                // In a real app, track view events
+                console.log(`View event for paper ${id}`);
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Paper
+            </a>
+          )
         )}
         
         {hasSolution && (
@@ -179,15 +206,27 @@ export default function PaperCard({
           )}
         </button>
         
-        <Link 
-          href={`/papers/${id}`}
-          className="px-4 py-2 border border-gray-300 text-gray-600 rounded hover:bg-gray-50 transition flex items-center text-sm ml-auto"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          Details
-        </Link>
+        {onPaperDetails ? (
+          <button 
+            onClick={() => onPaperDetails(id)}
+            className="px-4 py-2 border border-gray-300 text-gray-600 rounded hover:bg-gray-50 transition flex items-center text-sm ml-auto"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Details
+          </button>
+        ) : (
+          <Link 
+            href={`/papers/${id}`}
+            className="px-4 py-2 border border-gray-300 text-gray-600 rounded hover:bg-gray-50 transition flex items-center text-sm ml-auto"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Details
+          </Link>
+        )}
       </div>
     </div>
   );

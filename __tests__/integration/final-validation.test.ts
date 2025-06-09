@@ -15,7 +15,7 @@ describe('Final End-to-End Validation', () => {
     year: '2024',
     paperType: 'IIT_JEE_2024_TEST',
     paperUrl: 'https://example.com/test-paper.pdf',
-    hasDownload: true,
+    hasView: true,
     hasSolution: false,
     uploadDate: new Date().toISOString()
   };

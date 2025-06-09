@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
         paperType,
         paperUrl,
         solutionUrl,
-        hasDownload: true,
+        hasView: true,
         hasSolution: !!solutionUrl,
         uploadDate: new Date().toISOString()
       };
@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
         paperType,
         paperUrl,
         solutionUrl,
-        hasDownload: true,
+        hasView: true,
         hasSolution: !!solutionUrl,
         uploadDate: new Date().toISOString()
       };

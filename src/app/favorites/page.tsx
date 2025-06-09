@@ -6,8 +6,40 @@ import Link from 'next/link';
 import PaperCard from '@/components/PaperCard';
 import { ExamPaper } from '@/types/examPaper';
 
+// PDF Viewer Component
+interface PDFViewerProps {
+  pdfUrl: string;
+  onClose: () => void;
+  title: string;
+}
+
+const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl, onClose, title }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg w-full max-w-6xl h-5/6 flex flex-col">
+        <div className="flex justify-between items-center p-4 border-b">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            ×
+          </button>
+        </div>
+        <div className="flex-1 p-4">
+          <iframe
+            src={pdfUrl}
+            className="w-full h-full border rounded"
+            title={title}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Get user's favorite papers from API
-const getFavoritePapers = async (userId: string): Promise<ExamPaper[]> => {
+const getFavoritePapers = async (): Promise<ExamPaper[]> => {
   try {
     const response = await fetch('/api/favorites');
     if (!response.ok) {
@@ -29,12 +61,47 @@ export default function FavoritesPage() {
   const { data: session, status } = useSession();
   const [favorites, setFavorites] = useState<ExamPaper[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [pdfViewer, setPdfViewer] = useState<{ url: string; title: string } | null>(null);
+
+  // Function to handle PDF viewing inline
+  const handleViewPDF = async (paperId: string, paperTitle: string) => {
+    try {
+      // Use the new PDF view API that handles SAS tokens properly
+      const response = await fetch(`/api/view-pdf/${paperId}?type=paper`);
+      
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('PDF view API error:', error);
+        alert('Unable to load PDF. Please try again.');
+        return;
+      }
+      
+      const data = await response.json();
+      
+      // For external URLs, open in new tab instead of iframe to avoid CORS issues
+      if (data.external) {
+        window.open(data.pdfUrl, '_blank');
+        return;
+      }
+      
+      // For Azure blob URLs with SAS tokens, use iframe viewer
+      setPdfViewer({ url: data.pdfUrl, title: data.title });
+      
+    } catch (error) {
+      console.error('Error loading PDF:', error);
+      alert('Unable to load PDF. Please try again.');
+    }
+  };
+
+  const closePDFViewer = () => {
+    setPdfViewer(null);
+  };
 
   useEffect(() => {
     const loadFavorites = async () => {
       if (status === 'authenticated' && session?.user?.id) {
         try {
-          const papers = await getFavoritePapers(session.user.id);
+          const papers = await getFavoritePapers();
           setFavorites(papers);
         } catch (error) {
           console.error('Error loading favorites:', error);
@@ -69,6 +136,14 @@ export default function FavoritesPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {pdfViewer && (
+        <PDFViewer
+          pdfUrl={pdfViewer.url}
+          title={pdfViewer.title}
+          onClose={closePDFViewer}
+        />
+      )}
+      
       <h1 className="text-3xl font-bold mb-8">Your Favorite Papers</h1>
 
       {isLoading ? (
@@ -84,13 +159,14 @@ export default function FavoritesPage() {
               examType={paper.examType}
               year={paper.year}
               paperType={paper.paperType}
-              hasDownload={paper.hasDownload}
+              hasView={paper.hasView}
               hasSolution={paper.hasSolution}
               paperUrl={paper.paperUrl}
               solutionUrl={paper.solutionUrl}
               subjects={paper.subjects}
               views={paper.views}
               isFavorited={true}
+              onViewPaper={(paperId, paperTitle) => handleViewPDF(paperId, paperTitle)}
             />
           ))}
         </div>

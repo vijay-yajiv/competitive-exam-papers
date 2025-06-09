@@ -34,7 +34,7 @@ describe('DELETE /api/papers/delete/[paperId] API route', () => {
     paperType: 'IIT_JEE',
     paperUrl: 'https://example.com/test-paper.pdf',
     solutionUrl: 'https://example.com/test-solution.pdf',
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     uploadDate: '2025-06-01T10:00:00Z'
   };

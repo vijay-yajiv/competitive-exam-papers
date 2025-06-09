@@ -12,7 +12,7 @@ describe('Paper retrieval functionality', () => {
     year: '2023',
     paperType: 'IIT_JEE',
     paperUrl: 'https://example.com/test-paper.pdf',
-    hasDownload: true,
+    hasView: true,
     hasSolution: false,
     uploadDate: '2025-06-01T10:00:00Z'
   };

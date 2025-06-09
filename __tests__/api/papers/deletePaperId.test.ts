@@ -97,7 +97,7 @@ describe('DELETE /api/papers/delete/[paperId]', () => {
       paperType: 'IIT_JEE',
       paperUrl: 'https://example.com/test-paper.pdf',
       solutionUrl: 'https://example.com/test-solution.pdf',
-      hasDownload: true,
+      hasView: true,
       hasSolution: true,
       uploadDate: '2025-06-01T10:00:00Z'
     };
@@ -149,7 +149,7 @@ describe('DELETE /api/papers/delete/[paperId]', () => {
       year: '2023',
       paperType: 'IIT_JEE',
       paperUrl: 'https://example.com/test-paper.pdf',
-      hasDownload: true,
+      hasView: true,
       hasSolution: false,
       uploadDate: '2025-06-01T10:00:00Z'
     };
@@ -189,7 +189,7 @@ describe('DELETE /api/papers/delete/[paperId]', () => {
       year: '2023',
       paperType: 'IIT_JEE',
       paperUrl: 'https://example.com/test-paper.pdf',
-      hasDownload: true,
+      hasView: true,
       hasSolution: false,
       uploadDate: '2025-06-01T10:00:00Z'
     };

@@ -56,8 +56,6 @@ export const deletePaper = jest.fn().mockImplementation((id) => {
   return Promise.resolve({ success: true });
 });
 
-export const updatePaperViewCount = jest.fn().mockResolvedValue(undefined);
-
 const mockContainer = {
   item: jest.fn().mockImplementation((id, partitionKey) => {
     return {
@@ -77,19 +75,19 @@ const mockContainer = {
     create: jest.fn().mockImplementation((item) => {
       return Promise.resolve({ resource: item });
     }),
-    query: jest.fn().mockImplementation((querySpec: any) => {
+    query: jest.fn().mockImplementation((querySpec) => {
       // Simple implementation that only handles querying by id
-      const idParam = querySpec.parameters?.find((p: any) => p.name === '@id');
+      const idParam = querySpec.parameters?.find(p => p.name === '@id');
       if (idParam) {
-        const papers = mockPapers.filter((p: any) => p.id === idParam.value);
+        const papers = mockPapers.filter(p => p.id === idParam.value);
         return {
           fetchAll: jest.fn().mockResolvedValue({ resources: papers })
         };
       }
-      const examTypeParam = querySpec.parameters?.find((p: any) => p.name === '@examType');
-      const yearParam = querySpec.parameters?.find((p: any) => p.name === '@year');
+      const examTypeParam = querySpec.parameters?.find(p => p.name === '@examType');
+      const yearParam = querySpec.parameters?.find(p => p.name === '@year');
       if (examTypeParam && yearParam) {
-        const papers = mockPapers.filter((p: any) => 
+        const papers = mockPapers.filter(p => 
           p.examType === examTypeParam.value && 
           p.year === yearParam.value
         );

@@ -29,7 +29,7 @@ export const createContainerIfNotExists = async (): Promise<void> => {
   try {
     const containerClient = getContainerClient();
     await containerClient.createIfNotExists({
-      // Remove access property to make it private by default
+      // Container is private by default, which is what we want for security
     });
     console.log(`Container '${containerName}' created or already exists`);
   } catch (error) {

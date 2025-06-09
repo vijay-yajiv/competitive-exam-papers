@@ -72,6 +72,38 @@ function getTopics(examType: string) {
   }
 }
 
+// PDF Viewer Component
+interface PDFViewerProps {
+  pdfUrl: string;
+  onClose: () => void;
+  title: string;
+}
+
+const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl, onClose, title }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg w-full max-w-6xl h-5/6 flex flex-col">
+        <div className="flex justify-between items-center p-4 border-b">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            ×
+          </button>
+        </div>
+        <div className="flex-1 p-4">
+          <iframe
+            src={pdfUrl}
+            className="w-full h-full border rounded"
+            title={title}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function PaperDetailPage() {
   const params = useParams();
   const paperId = params.paperId as string;
@@ -81,6 +113,7 @@ export default function PaperDetailPage() {
   const [paper, setPaper] = useState<any>(null);
   const [paperLoading, setPaperLoading] = useState(true);
   const [paperNotFound, setPaperNotFound] = useState(false);
+  const [pdfViewer, setPdfViewer] = useState<{ url: string; title: string } | null>(null);
 
   // Fetch the specific paper by ID
   useEffect(() => {
@@ -226,6 +259,40 @@ export default function PaperDetailPage() {
       console.error('Error tracking download:', error);
     }
   };
+
+  // Function to handle PDF viewing inline
+  const handleViewPDF = async (paperTitle: string) => {
+    try {
+      // Use the new PDF view API that handles SAS tokens properly
+      const response = await fetch(`/api/view-pdf/${paperId}?type=paper`);
+      
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('PDF view API error:', error);
+        alert('Unable to load PDF. Please try again.');
+        return;
+      }
+      
+      const data = await response.json();
+      
+      // For external URLs, open in new tab instead of iframe to avoid CORS issues
+      if (data.external) {
+        window.open(data.pdfUrl, '_blank');
+        return;
+      }
+      
+      // For Azure blob URLs with SAS tokens, use iframe viewer
+      setPdfViewer({ url: data.pdfUrl, title: data.title });
+      
+    } catch (error) {
+      console.error('Error loading PDF:', error);
+      alert('Unable to load PDF. Please try again.');
+    }
+  };
+
+  const closePDFViewer = () => {
+    setPdfViewer(null);
+  };
   
   // Determine exam display name
   const examName = paper.examType === 'iit' ? 'IIT-JEE' : 
@@ -253,6 +320,14 @@ export default function PaperDetailPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {pdfViewer && (
+        <PDFViewer
+          pdfUrl={pdfViewer.url}
+          title={pdfViewer.title}
+          onClose={closePDFViewer}
+        />
+      )}
+
       <div className="mb-8">
         <Link 
           href={`/exams/${paper.examType}/${paper.year}`} 
@@ -273,19 +348,17 @@ export default function PaperDetailPage() {
           </div>
           
           <div className="flex gap-3">
-            {paper.hasDownload && (
-              <a 
-                href={`/api/download/${paperId}?type=paper`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={trackDownload}
+            {paper.hasView && (
+              <button 
+                onClick={() => handleViewPDF(`${examName} ${paper.year} - ${paper.paperType}`)}
                 className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                Download Paper
-              </a>
+                View Paper
+              </button>
             )}
             
             {paper.hasSolution && (

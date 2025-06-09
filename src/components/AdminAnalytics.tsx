@@ -84,7 +84,7 @@ export default function AdminAnalytics() {
       {/* Key metrics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-blue-50 rounded-lg p-4">
-          <h3 className="text-sm font-medium text-blue-500 mb-1">Total Downloads</h3>
+          <h3 className="text-sm font-medium text-blue-500 mb-1">Total Paper Views</h3>
           <p className="text-2xl font-bold">{totalDownloads.toLocaleString()}</p>
         </div>
         <div className="bg-green-50 rounded-lg p-4">
@@ -100,14 +100,14 @@ export default function AdminAnalytics() {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Top Papers */}
         <div>
-          <h3 className="font-medium text-gray-800 mb-4">Most Downloaded Papers</h3>
+          <h3 className="font-medium text-gray-800 mb-4">Most Viewed Papers</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
                   <th className="text-left py-2 font-medium text-gray-500">Paper</th>
-                  <th className="text-center py-2 font-medium text-gray-500">Downloads</th>
-                  <th className="text-center py-2 font-medium text-gray-500">Views</th>
+                  <th className="text-center py-2 font-medium text-gray-500">Paper Views</th>
+                  <th className="text-center py-2 font-medium text-gray-500">Page Views</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,8 +136,8 @@ export default function AdminAnalytics() {
                 <tr className="border-b">
                   <th className="text-left py-2 font-medium text-gray-500">Exam</th>
                   <th className="text-center py-2 font-medium text-gray-500">Papers</th>
-                  <th className="text-center py-2 font-medium text-gray-500">Downloads</th>
-                  <th className="text-center py-2 font-medium text-gray-500">Views</th>
+                  <th className="text-center py-2 font-medium text-gray-500">Paper Views</th>
+                  <th className="text-center py-2 font-medium text-gray-500">Page Views</th>
                 </tr>
               </thead>
               <tbody>

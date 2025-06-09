@@ -8,7 +8,7 @@ const mockPapers = [
     year: '2023',
     paperType: 'IIT_JEE',
     paperUrl: 'https://example.com/test-paper-1.pdf',
-    hasDownload: true,
+    hasView: true,
     hasSolution: false,
     uploadDate: '2025-06-01T10:00:00Z'
   },
@@ -19,7 +19,7 @@ const mockPapers = [
     paperType: 'NEET',
     paperUrl: 'https://example.com/test-paper-2.pdf',
     solutionUrl: 'https://example.com/test-paper-2-solution.pdf',
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     uploadDate: '2025-06-05T15:30:00Z'
   }

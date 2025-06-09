@@ -9,7 +9,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Main January Session - Paper 1 (B.E./B.Tech)",
     paperUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
     solutionUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Mathematics"],
     views: 1254
@@ -21,7 +21,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Main April Session - Paper 1 (B.E./B.Tech)",
     paperUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
     solutionUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true
   },
   {
@@ -31,7 +31,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Advanced - Paper 1 & 2",
     paperUrl: "https://www.embibe.com/exams/jee-advanced-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/jee-advanced-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true
   },
   
@@ -43,7 +43,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "NEET 2023 - Physics, Chemistry, Biology",
     paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true
   },
   {
@@ -53,7 +53,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "NEET 2023 - Physics",
     paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true
   },
   {
@@ -63,7 +63,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "NEET 2023 - Chemistry",
     paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true
   },
   {
@@ -73,7 +73,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "NEET 2023 - Biology",
     paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true
   },
   
@@ -84,7 +84,7 @@ export const examPapers: ExamPaper[] = [
     year: "2023",
     paperType: "GATE 2023 - Computer Science Engineering",
     paperUrl: "https://gate.iitk.ac.in/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: false,
     subjects: ["Computer Science", "General Aptitude"],
     views: 875
@@ -95,7 +95,7 @@ export const examPapers: ExamPaper[] = [
     year: "2023",
     paperType: "GATE 2023 - Electrical Engineering",
     paperUrl: "https://gate.iitk.ac.in/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: false,
     subjects: ["Electrical Engineering", "General Aptitude"],
     views: 652
@@ -109,7 +109,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Main January Session - Paper 1 (B.E./B.Tech)",
     paperUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
     solutionUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Mathematics"],
     views: 982
@@ -121,7 +121,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Advanced - Paper 1 & 2",
     paperUrl: "https://www.embibe.com/exams/jee-advanced-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/jee-advanced-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Mathematics"],
     views: 890
@@ -133,12 +133,24 @@ export const examPapers: ExamPaper[] = [
     examType: "neet",
     year: "2022",
     paperType: "NEET 2022 - Physics, Chemistry, Biology",
-    paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
+    paperUrl: "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf", // Sample PDF for testing
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Biology"],
     views: 1054
+  },
+  {
+    id: "neet-2022-phase2",
+    examType: "neet",
+    year: "2022",
+    paperType: "NEET 2022 Phase 2 - All Subjects",
+    paperUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", // Another sample PDF
+    solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
+    hasView: true,
+    hasSolution: true,
+    subjects: ["Physics", "Chemistry", "Biology"],
+    views: 892
   },
 
   // GATE Papers 2022
@@ -148,7 +160,7 @@ export const examPapers: ExamPaper[] = [
     year: "2022",
     paperType: "GATE 2022 - Computer Science Engineering",
     paperUrl: "https://gate.iitk.ac.in/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Computer Science", "General Aptitude"],
     views: 742
@@ -162,7 +174,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Main February Session - Paper 1",
     paperUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
     solutionUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Mathematics"],
     views: 765
@@ -174,7 +186,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Advanced - Paper 1 & 2",
     paperUrl: "https://www.embibe.com/exams/jee-advanced-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/jee-advanced-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Mathematics"],
     views: 683
@@ -188,7 +200,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "NEET 2021 - Physics, Chemistry, Biology",
     paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Biology"],
     views: 921
@@ -202,7 +214,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Main January Session - Paper 1",
     paperUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
     solutionUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Mathematics"],
     views: 583
@@ -214,7 +226,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "NEET 2020 - Physics, Chemistry, Biology",
     paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Biology"],
     views: 712
@@ -225,7 +237,7 @@ export const examPapers: ExamPaper[] = [
     year: "2020",
     paperType: "GATE 2020 - Computer Science Engineering",
     paperUrl: "https://gate.iitk.ac.in/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Computer Science", "General Aptitude"],
     views: 621
@@ -239,7 +251,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "JEE Main January Session - Paper 1",
     paperUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
     solutionUrl: "https://www.embibe.com/exams/jee-mains-question-paper/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Mathematics"],
     views: 432
@@ -251,7 +263,7 @@ export const examPapers: ExamPaper[] = [
     paperType: "NEET 2019 - Physics, Chemistry, Biology",
     paperUrl: "https://www.embibe.com/exams/neet-question-papers/",
     solutionUrl: "https://www.embibe.com/exams/neet-question-papers/",
-    hasDownload: true,
+    hasView: true,
     hasSolution: true,
     subjects: ["Physics", "Chemistry", "Biology"],
     views: 589
