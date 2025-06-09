@@ -69,15 +69,27 @@ export default function AdminDashboard() {
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Link 
-          href="/admin/upload" 
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-          </svg>
-          Upload New Paper
-        </Link>
+        <div className="flex gap-3">
+          <Link 
+            href="/admin/manage" 
+            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+              <path fillRule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 002 2h4a2 2 0 002-2V3a2 2 0 012 2v6.5A1.5 1.5 0 0116.5 13h-7A1.5 1.5 0 018 11.5V5zM6.5 9.5a1 1 0 112 0 1 1 0 01-2 0zm5 0a1 1 0 112 0 1 1 0 01-2 0z" clipRule="evenodd" />
+            </svg>
+            Manage Papers
+          </Link>
+          <Link 
+            href="/admin/upload" 
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+            </svg>
+            Upload New Paper
+          </Link>
+        </div>
       </div>
       
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
@@ -144,7 +156,15 @@ export default function AdminDashboard() {
       <AdminAnalytics />
       
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
-        <h2 className="text-xl font-semibold mb-3">Azure Storage Information</h2>
+        <div className="flex justify-between items-start mb-3">
+          <h2 className="text-xl font-semibold">Azure Storage Information</h2>
+          <Link 
+            href="/admin/debug" 
+            className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition"
+          >
+            Debug Azure Data
+          </Link>
+        </div>
         <p className="mb-4">
           Your exam papers and solutions are being stored in Azure Cloud. Here's some information about your setup:
         </p>

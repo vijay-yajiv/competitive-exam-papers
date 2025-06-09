@@ -4,9 +4,23 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface DebugData {
-  cosmosData: any[];
-  blobList: string[];
+  mode?: string;
+  message?: string;
+  localStorage?: string;
+  cosmosDB?: {
+    endpoint: string;
+    database: string;
+    container: string;
+    documentsCount: number;
+    documents: any[];
+  };
+  blobStorage?: {
+    containerName: string;
+    blobsCount: number;
+    blobs: any[];
+  };
   error?: string;
+  details?: string;
 }
 
 export default function AdminDebugPage() {
@@ -22,8 +36,6 @@ export default function AdminDebugPage() {
       } catch (error) {
         console.error('Error fetching debug data:', error);
         setDebugData({ 
-          cosmosData: [], 
-          blobList: [], 
           error: 'Failed to fetch debug data' 
         });
       } finally {
@@ -72,10 +84,10 @@ export default function AdminDebugPage() {
       {/* Azure Cosmos DB Data */}
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4">
-          📊 Azure Cosmos DB Data ({debugData?.cosmosData.length || 0} items)
+          📊 Azure Cosmos DB Data ({debugData?.cosmosDB?.documentsCount || 0} items)
         </h2>
         
-        {debugData?.cosmosData && debugData.cosmosData.length > 0 ? (
+        {debugData?.cosmosDB?.documents && debugData.cosmosDB.documents.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -89,7 +101,7 @@ export default function AdminDebugPage() {
                 </tr>
               </thead>
               <tbody>
-                {debugData.cosmosData.map((item, index) => (
+                {debugData.cosmosDB.documents.map((item: any, index: number) => (
                   <tr key={index} className="border-b hover:bg-gray-50">
                     <td className="px-4 py-3 text-sm font-mono">{item.id}</td>
                     <td className="px-4 py-3 text-sm">{item.examType}</td>
@@ -118,12 +130,12 @@ export default function AdminDebugPage() {
       {/* Azure Blob Storage Data */}
       <div className="bg-white rounded-lg shadow-sm border p-6">
         <h2 className="text-xl font-semibold mb-4">
-          🗂️ Azure Blob Storage Files ({debugData?.blobList.length || 0} files)
+          🗂️ Azure Blob Storage Files ({debugData?.blobStorage?.blobsCount || 0} files)
         </h2>
         
-        {debugData?.blobList && debugData.blobList.length > 0 ? (
+        {debugData?.blobStorage?.blobs && debugData.blobStorage.blobs.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {debugData.blobList.map((fileName, index) => (
+            {debugData.blobStorage.blobs.map((blob: any, index: number) => (
               <div key={index} className="bg-gray-50 p-4 rounded-md border">
                 <div className="flex items-center mb-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,10 +144,13 @@ export default function AdminDebugPage() {
                   <span className="text-sm font-medium text-gray-700">PDF File</span>
                 </div>
                 <p className="text-sm font-mono text-gray-600 break-all">
-                  {fileName}
+                  {blob.name}
                 </p>
                 <div className="mt-2 text-xs text-gray-500">
-                  Size: {Math.round(Math.random() * 1000 + 100)} KB
+                  Size: {blob.size ? Math.round(blob.size / 1024) : 'N/A'} KB
+                </div>
+                <div className="mt-1 text-xs text-gray-500">
+                  Modified: {blob.lastModified ? new Date(blob.lastModified).toLocaleDateString() : 'N/A'}
                 </div>
               </div>
             ))}

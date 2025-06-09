@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import devConfig from "@/config/devConfig";
 
 export default function Home() {
   return (
@@ -43,6 +44,14 @@ export default function Home() {
           >
             Explore Features
           </Link>
+          {devConfig.dev_scenario && (
+            <Link 
+              href="/admin" 
+              className="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-lg font-medium border-2 border-red-300"
+            >
+              🔧 Admin Dashboard
+            </Link>
+          )}
         </div>
       </section>
       

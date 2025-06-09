@@ -177,3 +177,26 @@ export const getSignedUrlFromBlobUrl = async (blobUrl: string, expiresInHours: n
     throw error;
   }
 };
+
+// Delete a file from Azure Blob Storage
+export const deleteFileFromStorage = async (blobUrl: string): Promise<void> => {
+  try {
+    validateAzureConfig();
+    
+    const containerClient = getContainerClient();
+    
+    // Extract blob name from URL
+    const url = new URL(blobUrl);
+    const pathParts = url.pathname.split('/');
+    const blobName = pathParts[pathParts.length - 1];
+    
+    // Delete the blob
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    await blockBlobClient.deleteIfExists();
+    
+    console.log(`File '${blobName}' deleted successfully from Azure Blob Storage`);
+  } catch (error) {
+    console.error(`Error deleting file '${blobUrl}' from Azure Blob Storage:`, error);
+    throw error;
+  }
+};

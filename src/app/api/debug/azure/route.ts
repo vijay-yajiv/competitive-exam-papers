@@ -15,19 +15,31 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // Validate Azure configuration
+    const cosmosEndpoint = process.env.COSMOS_ENDPOINT;
+    const cosmosKey = process.env.COSMOS_KEY;
+    const storageConnectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
+    const databaseName = process.env.AZURE_COSMOS_DATABASE_NAME || 'ExamPapersDB';
+    const containerName = process.env.AZURE_COSMOS_CONTAINER_NAME || 'Papers';
+
+    if (!cosmosEndpoint || !cosmosKey || !storageConnectionString) {
+      return NextResponse.json({
+        error: 'Missing Azure configuration',
+        details: 'Please check COSMOS_ENDPOINT, COSMOS_KEY, and AZURE_STORAGE_CONNECTION_STRING environment variables'
+      }, { status: 500 });
+    }
+
     // Initialize Azure clients
     const cosmosClient = new CosmosClient({
-      endpoint: process.env.AZURE_COSMOS_ENDPOINT!,
-      key: process.env.AZURE_COSMOS_KEY!,
+      endpoint: cosmosEndpoint,
+      key: cosmosKey,
     });
 
-    const blobServiceClient = BlobServiceClient.fromConnectionString(
-      process.env.AZURE_STORAGE_CONNECTION_STRING!
-    );
+    const blobServiceClient = BlobServiceClient.fromConnectionString(storageConnectionString);
 
     // Get Cosmos DB data
-    const database = cosmosClient.database(process.env.AZURE_COSMOS_DATABASE_NAME!);
-    const container = database.container(process.env.AZURE_COSMOS_CONTAINER_NAME!);
+    const database = cosmosClient.database(databaseName);
+    const container = database.container(containerName);
     
     const { resources: papers } = await container.items
       .query('SELECT * FROM c ORDER BY c._ts DESC')
@@ -53,18 +65,21 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       mode: 'production',
       cosmosDB: {
-        endpoint: process.env.AZURE_COSMOS_ENDPOINT,
-        database: process.env.AZURE_COSMOS_DATABASE_NAME,
-        container: process.env.AZURE_COSMOS_CONTAINER_NAME,
+        endpoint: cosmosEndpoint,
+        database: databaseName,
+        container: containerName,
         documentsCount: papers.length,
         documents: papers.map(paper => ({
           id: paper.id,
           title: paper.title,
           examType: paper.examType,
           year: paper.year,
+          paperType: paper.paperType,
           createdAt: paper.createdAt,
+          uploadDate: paper.uploadDate,
           paperUrl: paper.paperUrl,
-          solutionUrl: paper.solutionUrl
+          solutionUrl: paper.solutionUrl,
+          hasSolution: !!paper.solutionUrl
         }))
       },
       blobStorage: {

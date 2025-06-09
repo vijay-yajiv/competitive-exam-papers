@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
+import devConfig from '@/config/devConfig';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -91,6 +92,15 @@ export default function Navbar() {
                       >
                         Favorites
                       </Link>
+                      {devConfig.dev_scenario && (
+                        <Link 
+                          href="/admin" 
+                          className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100"
+                          onClick={toggleProfileMenu}
+                        >
+                          🔧 Admin Dashboard
+                        </Link>
+                      )}
                       <button
                         onClick={() => {
                           signOut();
@@ -166,6 +176,15 @@ export default function Navbar() {
                     >
                       Favorites
                     </Link>
+                    {devConfig.dev_scenario && (
+                      <Link 
+                        href="/admin" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="text-red-600 hover:text-red-500 py-2 px-3 rounded hover:bg-red-50 font-medium"
+                      >
+                        🔧 Admin Dashboard
+                      </Link>
+                    )}
                     <button
                       onClick={() => {
                         signOut();

@@ -78,17 +78,60 @@ export default function PaperDetailPage() {
   const { data: session } = useSession();
   const [isFavorited, setIsFavorited] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
-  // Find the specific paper by ID
-  const paper = examPapers.find(p => p.id === paperId);
-  
-  // If paper doesn't exist, return 404
-  if (!paper) {
-    notFound();
-  }
-  
-  // Track page view
+  const [paper, setPaper] = useState<any>(null);
+  const [paperLoading, setPaperLoading] = useState(true);
+  const [paperNotFound, setPaperNotFound] = useState(false);
+
+  // Fetch the specific paper by ID
   useEffect(() => {
+    const fetchPaper = async () => {
+      try {
+        console.log(`Fetching paper with ID: ${paperId}`);
+        
+        // First try to fetch from API (for uploaded papers)
+        const response = await fetch(`/api/papers/get/${paperId}`);
+        console.log(`API response status: ${response.status}`);
+        
+        if (response.ok) {
+          const paperData = await response.json();
+          console.log(`Paper data retrieved:`, paperData);
+          setPaper(paperData);
+          setPaperNotFound(false);
+        } else {
+          console.log(`Paper not found in API, checking static data`);
+          // Fallback to static data
+          const staticPaper = examPapers.find(p => p.id === paperId);
+          if (staticPaper) {
+            console.log(`Found paper in static data:`, staticPaper);
+            setPaper(staticPaper);
+            setPaperNotFound(false);
+          } else {
+            console.log(`Paper not found in static data either`);
+            setPaperNotFound(true);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching paper:', error);
+        // Fallback to static data
+        const staticPaper = examPapers.find(p => p.id === paperId);
+        if (staticPaper) {
+          setPaper(staticPaper);
+          setPaperNotFound(false);
+        } else {
+          setPaperNotFound(true);
+        }
+      } finally {
+        setPaperLoading(false);
+      }
+    };
+
+    fetchPaper();
+  }, [paperId]);
+
+  // Track page view - moved before early returns
+  useEffect(() => {
+    if (!paper || paperLoading) return; // Only track if paper is loaded
+    
     const trackView = async () => {
       try {
         await fetch(`/api/papers/paper/${paperId}/track`, {
@@ -104,11 +147,11 @@ export default function PaperDetailPage() {
     };
     
     trackView();
-  }, [paperId]);
+  }, [paperId, paper, paperLoading]);
   
-  // Check if paper is in user favorites
+  // Check if paper is in user favorites - moved before early returns
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user && paper && !paperLoading) {
       // Fetch favorite status from API
       fetch(`/api/favorites?paperId=${paperId}`)
         .then(res => res.json())
@@ -121,7 +164,53 @@ export default function PaperDetailPage() {
           console.error('Error checking favorite status:', error);
         });
     }
-  }, [session, paperId]);
+  }, [session, paperId, paper, paperLoading]);
+
+  // Show loading state while fetching paper
+  if (paperLoading) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="flex justify-center items-center py-12">
+          <svg className="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  // If paper doesn't exist, show 404 UI
+  if (paperNotFound) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="text-center py-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">404 - Paper Not Found</h1>
+          <p className="text-lg text-gray-600 mb-8">The exam paper you're looking for doesn't exist or has been removed.</p>
+          <Link 
+            href="/exams" 
+            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Browse All Papers
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // If we're still loading or no paper yet, show loading
+  if (!paper) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="flex justify-center items-center py-12">
+          <svg className="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      </div>
+    );
+  }
   
   // Function to track downloads
   const trackDownload = async () => {
